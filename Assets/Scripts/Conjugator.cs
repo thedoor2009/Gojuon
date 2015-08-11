@@ -36,12 +36,12 @@ public class Conjugator : MonoBehaviour
 
     public string Conjugate(string input, ConjugationMode mode, WordType destWordType)
     {
-        MethodInfo mi = GetType().GetMethod("Conjugate_" + mode.ToString() + "_" + destWordType.ToString());
+        MethodInfo mi = GetType().GetMethod("Conjugate_" + mode.ToString() + "_" + destWordType.ToString(), BindingFlags.NonPublic | BindingFlags.Instance);
         if (mi != null)
         {
             if (mi.GetParameters().Length != 1 || mi.ReturnType != typeof(string))
             {
-                Debug.LogError("Malformed Conjugation Handler: " + "Conjugate_" + mode.ToString() + "_" + destWordType.ToString());
+                Debug.LogError("Conjugation Handler does not match expected signature: " + "Conjugate_" + mode.ToString() + "_" + destWordType.ToString());
                 return "Error";
             }
 
@@ -55,9 +55,38 @@ public class Conjugator : MonoBehaviour
             return "Error";
         }
     }
+    #region Past StateOfBeing
+    private string Conjugate_Past_StateOfBeing(string input)
+    {
+        if (input != "だ")
+        {
+            Debug.LogError("String is not state of being character");
+            return "Error";
+        }
 
+        return "だった";
+    }
+    #endregion
+    #region Past V1
+    private string Conjugate_Past_VerbV1(string input)
+    {
+        int len = input.Length;
+        if (len < 2)
+        {
+            return "String too short to be a V1 verb";
+        }
+
+        if (input[len - 1] != 'る')
+        {
+            return "String isn't actually a V1 verb";
+        }
+
+        return (input.Substring(0, len - 1) + 'た');
+    }
+
+    #endregion
     #region Past V5
-    public string Conjugate_Past_VerbV5(string input)
+    private string Conjugate_Past_VerbV5(string input)
     {
         // handle 行く exception
         if (input == "行く")
@@ -91,6 +120,18 @@ public class Conjugator : MonoBehaviour
         }
 
         return ("Could not conjugate " + input + " into past tense");
+    }
+    #endregion
+    #region Negative StateOfBeing
+    private string Conjugate_Negative_StateOfBeing(string input)
+    {
+        if (input != "だ")
+        {
+            Debug.LogError("String is not state of being character");
+            return "Error";
+        }
+
+        return "じゃない";
     }
     #endregion
 }
