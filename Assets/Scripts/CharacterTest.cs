@@ -76,7 +76,7 @@ public class CharacterTest : MonoBehaviour {
 		Pronunciations[24] = "no";
 		Pronunciations[25] = "ha";
 		Pronunciations[26] = "hi";
-		Pronunciations[27] = "hu";
+		Pronunciations[27] = "fu";
 		Pronunciations[28] = "he";
 		Pronunciations[29] = "ho";
 
@@ -122,7 +122,7 @@ public class CharacterTest : MonoBehaviour {
 		Pronunciations[46] = "i";
 		Pronunciations[47] = "u";
 		Pronunciations[48] = "e";
-		Pronunciations[49] = "o";
+		Pronunciations[49] = "wo";
 
 		int index = Random.Range(0,49);
 		m_character = Characters[index];
