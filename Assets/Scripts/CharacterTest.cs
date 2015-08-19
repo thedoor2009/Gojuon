@@ -19,12 +19,20 @@ public class CharacterTest : MonoBehaviour {
 
     private string m_currentlyEnteredText;
 
+    private float m_timeLeft;
+    private int m_score;
+    private bool m_done;
+
 	void Start () {
         if (m_inputField != null)
         { 
             m_inputField.Select();
             m_inputField.ActivateInputField();
         }
+
+        m_timeLeft = 30.0f;
+        m_score = 0;
+        m_done = false;
 
         m_feedback = "<color=blue><size=30>頑張って！</size></color>";
 
@@ -204,6 +212,13 @@ public class CharacterTest : MonoBehaviour {
 	}
 
 	void Update () {
+        m_timeLeft -= Time.deltaTime;
+
+        if (m_timeLeft <= 0.0f)
+        {
+            m_timeLeft = 0.0f;
+            m_done = true;
+        }
 	}
 
 	void OnGUI(){
@@ -211,7 +226,19 @@ public class CharacterTest : MonoBehaviour {
 
 		GUI.Label(new Rect(Screen.width/2.0f, Screen.height - 350, 500, 500),"<color=green><size=50>" + m_displaypronunciation + "</size></color>");
 
+        if (m_done == true)
+        {
+            m_feedback = "<color=green><size=30>お疲れさまでした！</size></color>";
+        
+            if (GUI.Button(new Rect(Screen.width / 2.0f - 35.0f, Screen.height - 170, 70.0f, 40.0f), "Play Again"))
+            {
+                Application.LoadLevel("SceneOne");
+            }
+        }
+
         GUI.Label(new Rect(Screen.width / 2.0f, Screen.height - 200, 500, 500), m_feedback);
+        GUI.Label(new Rect(Screen.width - 80, 30, 60, 30), "<color=black><size=20>" + m_timeLeft.ToString("#.##") + "</size></color>");
+        GUI.Label(new Rect(Screen.width - 80, 80, 60, 30), "<color=black><size=20>" + m_score.ToString() + "</size></color>");
     }
 
     public void CheckAnswer()
@@ -238,6 +265,8 @@ public class CharacterTest : MonoBehaviour {
                 {
                     m_feedback = "<color=green><size=30>最高！</size></color>";
                 }
+
+                m_score += 1;
 
                 NextCharacter();
             }
