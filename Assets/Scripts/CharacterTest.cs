@@ -1,18 +1,32 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class CharacterTest : MonoBehaviour {
 
-	public static string[] Characters = new string[50];
-	public static string[] Pronunciations = new string[50];
+	public static string[] Characters = new string[75];
+	public static string[] Pronunciations = new string[75];
+
+    [SerializeField]
+    private InputField m_inputField;
 
 	private string m_character;
 	private string m_pronunciation;
 
 	private string m_displaycharacter;
 	private string m_displaypronunciation;
+    private string m_feedback;
+
+    private string m_currentlyEnteredText;
 
 	void Start () {
+        if (m_inputField != null)
+        { 
+            m_inputField.Select();
+            m_inputField.ActivateInputField();
+        }
+
+        m_feedback = "<color=blue><size=30>頑張って！</size></color>";
 
 		Characters[0] = "あ";
 		Characters[1] = "い";
@@ -48,7 +62,7 @@ public class CharacterTest : MonoBehaviour {
 		Characters[19] = "と";
 
 		Pronunciations[10] = "sa";
-		Pronunciations[11] = "si";
+		Pronunciations[11] = "shi";
 		Pronunciations[12] = "su";
 		Pronunciations[13] = "se";
 		Pronunciations[14] = "so";
@@ -124,7 +138,63 @@ public class CharacterTest : MonoBehaviour {
 		Pronunciations[48] = "e";
 		Pronunciations[49] = "wo";
 
-		int index = Random.Range(0,49);
+        Characters[50] = "が";
+        Characters[51] = "ぎ";
+        Characters[52] = "ぐ";
+        Characters[53] = "げ";
+        Characters[54] = "ご";
+        Characters[55] = "だ";
+        Characters[56] = "ぢ";
+        Characters[57] = "づ";
+        Characters[58] = "で";
+        Characters[59] = "ど";
+
+        Pronunciations[50] = "ga";
+        Pronunciations[51] = "gi";
+        Pronunciations[52] = "gu";
+        Pronunciations[53] = "ge";
+        Pronunciations[54] = "go";
+        Pronunciations[55] = "da";
+        Pronunciations[56] = "ji";
+        Pronunciations[57] = "dzu";
+        Pronunciations[58] = "de";
+        Pronunciations[59] = "do";
+
+        Characters[60] = "ざ";
+        Characters[61] = "じ";
+        Characters[62] = "ず";
+        Characters[63] = "ぜ";
+        Characters[64] = "ぞ";
+        Characters[65] = "ば";
+        Characters[66] = "び";
+        Characters[67] = "ぶ";
+        Characters[68] = "べ";
+        Characters[69] = "ぼ";
+
+        Pronunciations[60] = "za";
+        Pronunciations[61] = "ji";
+        Pronunciations[62] = "zu";
+        Pronunciations[63] = "ze";
+        Pronunciations[64] = "zo";
+        Pronunciations[65] = "ba";
+        Pronunciations[66] = "bi";
+        Pronunciations[67] = "bu";
+        Pronunciations[68] = "be";
+        Pronunciations[69] = "bo";
+
+        Characters[70] = "ぱ";
+        Characters[71] = "ぴ";
+        Characters[72] = "ぷ";
+        Characters[73] = "ぺ";
+        Characters[74] = "ぽ";
+
+        Pronunciations[70] = "pa";
+        Pronunciations[71] = "pi";
+        Pronunciations[72] = "pu";
+        Pronunciations[73] = "pe";
+        Pronunciations[74] = "po";
+
+		int index = Random.Range(0,Pronunciations.Length);
 		m_character = Characters[index];
 		m_pronunciation = Pronunciations[index];
 
@@ -134,23 +204,56 @@ public class CharacterTest : MonoBehaviour {
 	}
 
 	void Update () {
-	
 	}
 
 	void OnGUI(){
-
 		GUI.Label(new Rect(Screen.width/2.0f, Screen.height - 450, 500, 500),"<color=green><size=50>" + m_displaycharacter + "</size></color>");
 
 		GUI.Label(new Rect(Screen.width/2.0f, Screen.height - 350, 500, 500),"<color=green><size=50>" + m_displaypronunciation + "</size></color>");
-	}
 
-	public void NextCharacter(){
-		int index = Random.Range(0,49);
+        GUI.Label(new Rect(Screen.width / 2.0f, Screen.height - 200, 500, 500), m_feedback);
+    }
+
+    public void CheckAnswer()
+    {
+        if (m_inputField != null)
+        {
+            string input = m_inputField.text;
+
+            if (input != m_pronunciation)
+            {
+                m_feedback = "<color=red><size=30>もう一度！</size></color>";
+                m_inputField.text = "";
+
+                m_inputField.Select();
+                m_inputField.ActivateInputField();
+            }
+            else
+            {
+                if (Random.Range(0, 100) < 50)
+                {
+                    m_feedback = "<color=green><size=30>完璧！</size></color>";
+                }
+                else
+                {
+                    m_feedback = "<color=green><size=30>最高！</size></color>";
+                }
+
+                NextCharacter();
+            }
+        }
+    }
+
+	private void NextCharacter(){
+		int index = Random.Range(0,Pronunciations.Length);
+        m_inputField.text = "";
 		m_character = Characters[index];
 		m_pronunciation = Pronunciations[index];
 
 		m_displaycharacter = m_character;
 		m_displaypronunciation = "";
+        m_inputField.Select();
+        m_inputField.ActivateInputField();
 	}
 
 	public void ShowPronunciation(){

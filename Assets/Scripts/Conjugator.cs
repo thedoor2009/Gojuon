@@ -122,6 +122,30 @@ public class Conjugator : MonoBehaviour
         return ("Could not conjugate " + input + " into past tense");
     }
     #endregion
+    #region Past ExSuru
+    private string Conjugate_Past_VerbExSuru(string input)
+    {
+        if (input != "する")
+        {
+            Debug.LogError("Input is not suru");
+            return "Error";
+        }
+
+        return "した";
+    }
+    #endregion
+    #region Past ExKuru
+    private string Conjugate_Past_VerbExKuru(string input)
+    {
+        if (input != "来る")
+        {
+            Debug.LogError("Input is not kuru");
+            return "Error";
+        }
+
+        return "来た";
+    }
+    #endregion
     #region Negative StateOfBeing
     private string Conjugate_Negative_StateOfBeing(string input)
     {
