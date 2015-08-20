@@ -266,9 +266,11 @@ public class CharacterTest : MonoBehaviour {
                     m_feedback = "<color=green><size=30>最高！</size></color>";
                 }
 
-                m_score += 1;
-
-                NextCharacter();
+                if (!m_done)
+                {
+                	m_score += 1;
+	                NextCharacter();
+				}
             }
         }
     }
