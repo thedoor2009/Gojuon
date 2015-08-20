@@ -10,14 +10,18 @@ public class CharacterTest : MonoBehaviour {
     [SerializeField]
     private InputField m_inputField;
 
+    [SerializeField]
+    private Text m_feedback;
+
 	private string m_character;
 	private string m_pronunciation;
 
 	private string m_displaycharacter;
 	private string m_displaypronunciation;
-    private string m_feedback;
 
     private string m_currentlyEnteredText;
+
+    private Color greenColor;
 
     private float m_timeLeft;
     private int m_score;
@@ -30,11 +34,15 @@ public class CharacterTest : MonoBehaviour {
             m_inputField.ActivateInputField();
         }
 
+        greenColor = new Color(0.0f, 0.4f, 0.0f);
+
         m_timeLeft = 30.0f;
         m_score = 0;
         m_done = false;
 
-        m_feedback = "<color=blue><size=30>頑張って！</size></color>";
+        m_feedback.fontSize = 30;
+        m_feedback.text = "頑張って！";
+        m_feedback.color = Color.blue;
 
 		Characters[0] = "あ";
 		Characters[1] = "い";
@@ -228,7 +236,8 @@ public class CharacterTest : MonoBehaviour {
 
         if (m_done == true)
         {
-            m_feedback = "<color=green><size=30>お疲れさまでした！</size></color>";
+            m_feedback.color = greenColor;
+            m_feedback.text = "お疲れさまでした！";
         
             if (GUI.Button(new Rect(Screen.width / 2.0f - 35.0f, Screen.height - 170, 70.0f, 40.0f), "Play Again"))
             {
@@ -236,7 +245,6 @@ public class CharacterTest : MonoBehaviour {
             }
         }
 
-        GUI.Label(new Rect(Screen.width / 2.0f, Screen.height - 200, 500, 500), m_feedback);
         GUI.Label(new Rect(Screen.width - 80, 30, 60, 30), "<color=black><size=20>" + m_timeLeft.ToString("#.##") + "</size></color>");
         GUI.Label(new Rect(Screen.width - 80, 80, 60, 30), "<color=black><size=20>" + m_score.ToString() + "</size></color>");
     }
@@ -249,7 +257,8 @@ public class CharacterTest : MonoBehaviour {
 
             if (input != m_pronunciation)
             {
-                m_feedback = "<color=red><size=30>もう一度！</size></color>";
+                m_feedback.color = Color.red;
+                m_feedback.text = "もう一度！";
                 m_inputField.text = "";
 
                 m_inputField.Select();
@@ -257,13 +266,21 @@ public class CharacterTest : MonoBehaviour {
             }
             else
             {
-                if (Random.Range(0, 100) < 50)
+                int randomFeedback = Random.Range(0, 100);
+                if (randomFeedback < 50)
                 {
-                    m_feedback = "<color=green><size=30>完璧！</size></color>";
+                    m_feedback.color = greenColor;
+                    m_feedback.text = "完璧！";
+                }
+                else if (randomFeedback >= 50 && randomFeedback < 96)
+                {
+                    m_feedback.color = greenColor;
+                    m_feedback.text = "最高！";
                 }
                 else
                 {
-                    m_feedback = "<color=green><size=30>最高！</size></color>";
+                    m_feedback.color = greenColor;
+                    m_feedback.text = "お兄ちゃんだい～すき！☆";
                 }
 
                 if (!m_done)
